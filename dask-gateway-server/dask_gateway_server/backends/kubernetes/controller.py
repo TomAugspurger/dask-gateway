@@ -1022,6 +1022,8 @@ class KubeController(KubeBackendAndControllerMixin, Application):
         return route["metadata"]["name"]
 
     def get_scheduler_command(self, namespace, cluster_name, config):
+        dashboard_prefix = self.dashboard_prefix.format(namespace=namespace, cluster_name=cluster_name)
+
         return config.scheduler_cmd + [
             "--protocol",
             "tls",
@@ -1031,6 +1033,8 @@ class KubeController(KubeBackendAndControllerMixin, Application):
             "8786",
             "--dashboard-address",
             ":8787",
+            "--dashboard-prefix",
+            dashboard_prefix,
             "--dg-api-address",
             ":8788",
             "--preload",
@@ -1040,7 +1044,6 @@ class KubeController(KubeBackendAndControllerMixin, Application):
             "--dg-adaptive-period",
             str(config.adaptive_period),
             "--dg-idle-timeout",
-            str(config.idle_timeout),
         ]
 
     def get_worker_command(self, namespace, cluster_name, config):

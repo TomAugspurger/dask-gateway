@@ -270,6 +270,20 @@ class ClusterConfig(Configurable):
         config=True,
     )
 
+    dashboard_prefix = Union(
+        trait_types=[
+            Unicode(),
+        ],
+        default_value="/",
+        config=True,
+        help=r"""
+        The value to pass to `dask-scheduler --dashboard-prefix`.
+
+        You can include Python template strings like `/services/dask-gateway/{namespace}.{cluster_name}`,
+        which will be filled when getting the scheduler command.
+        """
+    )
+
     worker_cores = Integer(
         1,
         min=1,
